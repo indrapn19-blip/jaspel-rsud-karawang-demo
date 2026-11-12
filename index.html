@@ -188,6 +188,21 @@ function cekJaspel() {
   const provider = new GoogleAuthProvider();
 
   console.log("Firebase berhasil diinisialisasi");
+  async function loginGoogle() {
+  try {
+    const result = await signInWithPopup(auth, provider);
+    alert("Login berhasil: " + result.user.email);
+  } catch (error) {
+    alert("Login gagal: " + error.message);
+  }
+}
+const loginButton = document.createElement("button");
+loginButton.textContent = "Login dengan Google";
+loginButton.onclick = loginGoogle;
+loginButton.style.padding = "12px 20px";
+loginButton.style.margin = "20px";
+loginButton.style.cursor = "pointer";
+document.body.appendChild(loginButton);
 </script>
 </body>
 </html>
