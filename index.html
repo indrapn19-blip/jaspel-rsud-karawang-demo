@@ -2,71 +2,168 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Informasi Jaspel RSUD Karawang</title>
 <style>
+* { box-sizing: border-box; }
 body {
-  font-family: Arial, sans-serif;
-  background: #eef3f8;
   margin: 0;
   padding: 20px;
+  font-family: Arial, sans-serif;
+  background: #eef3f8;
+  color: #263238;
 }
 .container {
-  max-width: 420px;
-  margin: 40px auto;
+  max-width: 480px;
+  margin: 25px auto;
   background: white;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px #ccc;
+  padding: 22px;
+  border-radius: 14px;
+  box-shadow: 0 3px 12px #0001;
 }
-h2 {
+.header {
   text-align: center;
   color: #087b55;
 }
-p {
-  text-align: center;
-  color: #555;
-}
+.header h2 { margin-bottom: 5px; }
+.header p { color: #666; margin-top: 5px; }
 input, button {
   width: 100%;
-  box-sizing: border-box;
-  padding: 13px;
+  padding: 14px;
   margin-top: 12px;
-  border-radius: 7px;
+  border-radius: 8px;
   font-size: 16px;
 }
-input {
-  border: 1px solid #bbb;
-}
+input { border: 1px solid #bbb; }
 button {
-  border: none;
   background: #087b55;
   color: white;
+  border: 0;
   font-weight: bold;
   cursor: pointer;
 }
-.info {
-  margin-top: 20px;
+.result {
+  display: none;
+  margin-top: 22px;
+}
+.item {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 11px 0;
+  border-bottom: 1px solid #eee;
+}
+.total {
+  background: #e6f5ed;
   padding: 15px;
-  background: #e8f5ee;
   border-radius: 8px;
+  margin-top: 15px;
+  font-weight: bold;
+}
+.note {
+  font-size: 12px;
+  color: #777;
   text-align: center;
+  margin-top: 20px;
 }
 </style>
 </head>
 <body>
 <div class="container">
-<h2>INFORMASI JASPEL</h2>
-<p>RSUD Karawang</p>
-<p>Silakan masukkan nomor rekening untuk melihat informasi Jaspel.</p>
+  <div class="header">
+    <h2>INFORMASI JASPEL</h2>
+    <p>RSUD Karawang</p>
+  </div>
 
-<input type="text" placeholder="Masukkan nomor rekening" disabled>
-<button disabled>CEK INFORMASI JASPEL</button>
+  <p>Masukkan nomor rekening untuk melihat informasi Jaspel.</p>
 
-<div class="info">
-<strong>Website Informasi Jaspel</strong>
-<p>Halaman demo berhasil dibuat.</p>
+  <input id="rekening" type="text"
+    placeholder="Contoh: 1234567890">
+
+  <button onclick="cekJaspel()">CEK INFORMASI JASPEL</button>
+
+  <p id="pesan"></p>
+
+  <div class="result" id="hasil">
+    <h3>Rincian Jaspel</h3>
+    <div class="item"><span>Nama Pegawai</span><b id="nama"></b></div>
+    <div class="item"><span>Insentif Bruto</span><b id="bruto"></b></div>
+    <div class="item"><span>Koperasi</span><b id="koperasi"></b></div>
+    <div class="item"><span>Masjid</span><b id="masjid"></b></div>
+    <div class="item"><span>Sosial</span><b id="sosial"></b></div>
+    <div class="item"><span>Olahraga</span><b id="olahraga"></b></div>
+    <div class="item"><span>PPNI</span><b id="ppni"></b></div>
+    <div class="item"><span>Zakat</span><b id="zakat"></b></div>
+    <div class="item"><span>IBI</span><b id="ibi"></b></div>
+    <div class="item"><span>BPJS 1%</span><b id="bpjs"></b></div>
+    <div class="item"><span>PMI</span><b id="pmi"></b></div>
+    <div class="item"><span>Lain-lain</span><b id="lain"></b></div>
+    <div class="item"><span>PPH 21</span><b id="pph"></b></div>
+    <div class="total">
+      INSENTIF DITERIMA
+      <div id="diterima" style="font-size:22px;margin-top:8px"></div>
+    </div>
+  </div>
+
+  <p class="note">
+    DEMO — Data pegawai dan nominal di halaman ini hanya data contoh.
+    Bukan informasi Jaspel resmi.
+  </p>
 </div>
-</div>
+
+<script>
+const contoh = {
+  rekening: "1234567890",
+  nama: "BUDI SANTOSO (CONTOH)",
+  bruto: 5000000,
+  koperasi: 100000,
+  masjid: 25000,
+  sosial: 25000,
+  olahraga: 10000,
+  ppni: 0,
+  zakat: 125000,
+  ibi: 0,
+  bpjs: 50000,
+  pmi: 10000,
+  lain: 0,
+  pph: 75000,
+  diterima: 4580000
+};
+
+function rupiah(angka) {
+  return "Rp " + angka.toLocaleString("id-ID");
+}
+
+function cekJaspel() {
+  const rekening = document.getElementById("rekening").value.trim();
+  const pesan = document.getElementById("pesan");
+  const hasil = document.getElementById("hasil");
+
+  hasil.style.display = "none";
+
+  if (rekening === contoh.rekening) {
+    document.getElementById("nama").textContent = contoh.nama;
+    document.getElementById("bruto").textContent = rupiah(contoh.bruto);
+    document.getElementById("koperasi").textContent = rupiah(contoh.koperasi);
+    document.getElementById("masjid").textContent = rupiah(contoh.masjid);
+    document.getElementById("sosial").textContent = rupiah(contoh.sosial);
+    document.getElementById("olahraga").textContent = rupiah(contoh.olahraga);
+    document.getElementById("ppni").textContent = rupiah(contoh.ppni);
+    document.getElementById("zakat").textContent = rupiah(contoh.zakat);
+    document.getElementById("ibi").textContent = rupiah(contoh.ibi);
+    document.getElementById("bpjs").textContent = rupiah(contoh.bpjs);
+    document.getElementById("pmi").textContent = rupiah(contoh.pmi);
+    document.getElementById("lain").textContent = rupiah(contoh.lain);
+    document.getElementById("pph").textContent = rupiah(contoh.pph);
+    document.getElementById("diterima").textContent = rupiah(contoh.diterima);
+
+    pesan.textContent = "";
+    hasil.style.display = "block";
+  } else {
+    pesan.textContent = "Nomor rekening tidak ditemukan. Coba gunakan nomor rekening contoh.";
+    pesan.style.color = "red";
+  }
+}
+</script>
 </body>
 </html>
