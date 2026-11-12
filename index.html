@@ -167,42 +167,40 @@ function cekJaspel() {
 </script>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
-  import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
+  import {
+    getAuth,
+    GoogleAuthProvider,
+    signInWithPopup
+  } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
 
   const firebaseConfig = {
-  apiKey: "AIzaSyCpLT8P0YU-wFJm7j8cfeNfxoDTMxy_rls",
-
-  authDomain: "informasi-jaspel-rsud-karawang.firebaseapp.com",
-
-  projectId: "informasi-jaspel-rsud-karawang",
-
-  storageBucket: "informasi-jaspel-rsud-karawang.firebasestorage.app",
-
-  messagingSenderId: "905823878691",
-
-  appId: "1:905823878691:web:d0b9bfdf48ac49a1e27b96"
+    apiKey: "AIzaSyCpLT8P0YU-wFJm7j8cfeNfxoDTMxy_rls",
+    authDomain: "informasi-jaspel-rsud-karawang.firebaseapp.com",
+    projectId: "informasi-jaspel-rsud-karawang",
+    storageBucket: "informasi-jaspel-rsud-karawang.firebasestorage.app",
+    messagingSenderId: "905823878691",
+    appId: "1:905823878691:web:d0b9bfdf48ac49a1e27b96"
   };
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
 
-  console.log("Firebase berhasil diinisialisasi");
   async function loginGoogle() {
-  try {
-    const result = await signInWithPopup(auth, provider);
-    alert("Login berhasil: " + result.user.email);
-  } catch (error) {
-    alert("Login gagal: " + error.message);
+    try {
+      const result = await signInWithPopup(auth, provider);
+      alert("Login berhasil: " + result.user.email);
+    } catch (error) {
+      alert("Login gagal: " + error.message);
+    }
   }
-}
-const loginButton = document.createElement("button");
-loginButton.textContent = "Login dengan Google";
-loginButton.onclick = loginGoogle;
-loginButton.style.padding = "12px 20px";
-loginButton.style.margin = "20px";
-loginButton.style.cursor = "pointer";
-document.body.appendChild(loginButton);
+
+  const loginButton = document.createElement("button");
+  loginButton.textContent = "LOGIN DENGAN GOOGLE";
+  loginButton.onclick = loginGoogle;
+
+  document.querySelector(".container").appendChild(loginButton);
+</script>
 </script>
 </body>
 </html>
