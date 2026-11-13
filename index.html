@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -6,6 +7,7 @@
 <title>Informasi Jaspel RSUD Karawang</title>
 <style>
 * { box-sizing: border-box; }
+
 body {
   margin: 0;
   padding: 20px;
@@ -13,6 +15,7 @@ body {
   background: #eef3f8;
   color: #263238;
 }
+
 .container {
   max-width: 480px;
   margin: 25px auto;
@@ -21,12 +24,15 @@ body {
   border-radius: 14px;
   box-shadow: 0 3px 12px #0001;
 }
+
 .header {
   text-align: center;
   color: #087b55;
 }
+
 .header h2 { margin-bottom: 5px; }
 .header p { color: #666; margin-top: 5px; }
+
 input, button {
   width: 100%;
   padding: 14px;
@@ -34,7 +40,9 @@ input, button {
   border-radius: 8px;
   font-size: 16px;
 }
+
 input { border: 1px solid #bbb; }
+
 button {
   background: #087b55;
   color: white;
@@ -42,165 +50,85 @@ button {
   font-weight: bold;
   cursor: pointer;
 }
-.result {
-  display: none;
-  margin-top: 22px;
-}
-.item {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 11px 0;
-  border-bottom: 1px solid #eee;
-}
-.total {
-  background: #e6f5ed;
-  padding: 15px;
-  border-radius: 8px;
-  margin-top: 15px;
-  font-weight: bold;
-}
+
 .note {
   font-size: 12px;
   color: #777;
   text-align: center;
   margin-top: 20px;
 }
+
+#hasil { display: none; }
 </style>
 </head>
+
 <body>
 <div class="container">
+
   <div class="header">
     <h2>INFORMASI JASPEL</h2>
     <p>RSUD Karawang</p>
   </div>
 
-  <p>Masukkan nomor rekening untuk melihat informasi Jaspel.</p>
+  <div id="halamanLogin">
+    <h3>Login Pegawai</h3>
 
-  <input id="rekening" type="text"
-    placeholder="Contoh: 1234567890">
+    <p>Masukkan nomor rekening dan PIN Anda.</p>
 
-  <button onclick="cekJaspel()">CEK INFORMASI JASPEL</button>
+    <input
+      id="rekening"
+      type="text"
+      inputmode="numeric"
+      placeholder="Nomor rekening"
+      autocomplete="username"
+    >
 
-  <p id="pesan"></p>
+    <input
+      id="pin"
+      type="password"
+      inputmode="numeric"
+      maxlength="6"
+      placeholder="PIN 6 digit"
+      autocomplete="current-password"
+    >
 
-  <div class="result" id="hasil">
-    <h3>Rincian Jaspel</h3>
-    <div class="item"><span>Nama Pegawai</span><b id="nama"></b></div>
-    <div class="item"><span>Insentif Bruto</span><b id="bruto"></b></div>
-    <div class="item"><span>Koperasi</span><b id="koperasi"></b></div>
-    <div class="item"><span>Masjid</span><b id="masjid"></b></div>
-    <div class="item"><span>Sosial</span><b id="sosial"></b></div>
-    <div class="item"><span>Olahraga</span><b id="olahraga"></b></div>
-    <div class="item"><span>PPNI</span><b id="ppni"></b></div>
-    <div class="item"><span>Zakat</span><b id="zakat"></b></div>
-    <div class="item"><span>IBI</span><b id="ibi"></b></div>
-    <div class="item"><span>BPJS 1%</span><b id="bpjs"></b></div>
-    <div class="item"><span>PMI</span><b id="pmi"></b></div>
-    <div class="item"><span>Lain-lain</span><b id="lain"></b></div>
-    <div class="item"><span>PPH 21</span><b id="pph"></b></div>
-    <div class="total">
-      INSENTIF DITERIMA
-      <div id="diterima" style="font-size:22px;margin-top:8px"></div>
-    </div>
+    <button type="button" onclick="loginPegawai()">
+      LOGIN
+    </button>
   </div>
 
+  <div id="hasil">
+    <h3>Informasi Jaspel</h3>
+    <p id="nama"></p>
+    <p id="pesanHasil"></p>
+
+    <button type="button" onclick="logoutPegawai()">
+      LOGOUT
+    </button>
+  </div>
+
+  <p id="pesan" role="status"></p>
+
   <p class="note">
-    DEMO — Data pegawai dan nominal di halaman ini hanya data contoh.
-    Bukan informasi Jaspel resmi.
+    Informasi Jaspel RSUD Karawang
   </p>
+
 </div>
 
 <script>
-const contoh = {
-  rekening: "1234567890",
-  nama: "BUDI SANTOSO (CONTOH)",
-  bruto: 5000000,
-  koperasi: 100000,
-  masjid: 25000,
-  sosial: 25000,
-  olahraga: 10000,
-  ppni: 0,
-  zakat: 125000,
-  ibi: 0,
-  bpjs: 50000,
-  pmi: 10000,
-  lain: 0,
-  pph: 75000,
-  diterima: 4580000
-};
-
-function rupiah(angka) {
-  return "Rp " + angka.toLocaleString("id-ID");
+function loginPegawai() {
+  document.getElementById("pesan").textContent =
+    "Fitur login belum dihubungkan ke server.";
 }
 
-function cekJaspel() {
-  const rekening = document.getElementById("rekening").value.trim();
-  const pesan = document.getElementById("pesan");
-  const hasil = document.getElementById("hasil");
-
-  hasil.style.display = "none";
-
-  if (rekening === contoh.rekening) {
-    document.getElementById("nama").textContent = contoh.nama;
-    document.getElementById("bruto").textContent = rupiah(contoh.bruto);
-    document.getElementById("koperasi").textContent = rupiah(contoh.koperasi);
-    document.getElementById("masjid").textContent = rupiah(contoh.masjid);
-    document.getElementById("sosial").textContent = rupiah(contoh.sosial);
-    document.getElementById("olahraga").textContent = rupiah(contoh.olahraga);
-    document.getElementById("ppni").textContent = rupiah(contoh.ppni);
-    document.getElementById("zakat").textContent = rupiah(contoh.zakat);
-    document.getElementById("ibi").textContent = rupiah(contoh.ibi);
-    document.getElementById("bpjs").textContent = rupiah(contoh.bpjs);
-    document.getElementById("pmi").textContent = rupiah(contoh.pmi);
-    document.getElementById("lain").textContent = rupiah(contoh.lain);
-    document.getElementById("pph").textContent = rupiah(contoh.pph);
-    document.getElementById("diterima").textContent = rupiah(contoh.diterima);
-
-    pesan.textContent = "";
-    hasil.style.display = "block";
-  } else {
-    pesan.textContent = "Nomor rekening tidak ditemukan. Coba gunakan nomor rekening contoh.";
-    pesan.style.color = "red";
-  }
+function logoutPegawai() {
+  document.getElementById("hasil").style.display = "none";
+  document.getElementById("halamanLogin").style.display = "block";
+  document.getElementById("rekening").value = "";
+  document.getElementById("pin").value = "";
+  document.getElementById("pesan").textContent = "";
 }
 </script>
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
-  import {
-    getAuth,
-    GoogleAuthProvider,
-    signInWithPopup
-  } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyCpLT8P0YU-wFJm7j8cfeNfxoDTMxy_rls",
-    authDomain: "informasi-jaspel-rsud-karawang.firebaseapp.com",
-    projectId: "informasi-jaspel-rsud-karawang",
-    storageBucket: "informasi-jaspel-rsud-karawang.firebasestorage.app",
-    messagingSenderId: "905823878691",
-    appId: "1:905823878691:web:d0b9bfdf48ac49a1e27b96"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const provider = new GoogleAuthProvider();
-
-  async function loginGoogle() {
-    try {
-      const result = await signInWithPopup(auth, provider);
-      alert("Login berhasil: " + result.user.email);
-    } catch (error) {
-      alert("Login gagal: " + error.message);
-    }
-  }
-
-  const loginButton = document.createElement("button");
-  loginButton.textContent = "LOGIN DENGAN GOOGLE";
-  loginButton.onclick = loginGoogle;
-
-  document.querySelector(".container").appendChild(loginButton);
-</script>
-</script>
 </body>
 </html>
